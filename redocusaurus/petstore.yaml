@@ -1,0 +1,1328 @@
+openapi: 3.0.3
+info:
+  title: Гуляй Играй Развивай
+  description: Сервис для ИС "Гуляй Играй Развивай"
+  version: 1.0.0
+servers:
+  - url: https://api.server.test/api/v1/gir
+tags:
+  - name: user
+    description: Операции для пользователя
+  - name: business
+    description: Операции для бизнес-аккаунта
+  - name: moderator
+    description: Операции для модератора
+security:
+  - bearerAuth: []
+paths:
+  /users/profile:
+    get:
+      tags:
+        - user
+      summary: Получить данные пользователя
+      description: Метод возвращает данные о пользователе
+      operationId: getUser
+      responses:
+        '200':
+          description: Успешное получение списка реакций
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/feedback:
+    get:
+      tags:
+        - user
+      summary: Найти отзывы пользователя
+      description: Метод возвращает отзывы, оставленные пользователю другими пользователями
+      operationId: getFeedback
+      parameters:
+        - name: pageNumber
+          in: query
+          description: Номер страницы для пагинации
+          required: true
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: Количество отзывов на странице
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Успешное получение списка отзывов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/activity:
+    patch:
+      tags:
+        - user
+      summary: Обновить статус активности пользователя
+      description: Метод обновляет статус активности пользователя
+      operationId: updatePublicationReaction
+      requestBody:
+        description: Обновить статус активности пользователя
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                activity:
+                  $ref: '#/components/schemas/Activity'
+        required: true
+      responses:
+        '204':
+          description: Успешное обновление статуса активности
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/pet/{petId}:
+    get:
+      tags:
+        - user
+      summary: Найти питомца по id
+      description: Метод возвращает питомца
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          description: Идентификатор питомца
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное получение информации о питомце
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/pet/{petId}/medicines:
+    get:
+      tags:
+        - user
+      summary: Найти информацию о вакцинах и медикаментах питомца
+      description: Метод возвращает информацию о вакцинах и медикаментах питомца
+      operationId: getMedicinesByPetId
+      parameters:
+        - name: petId
+          in: path
+          description: Идентификатор питомца
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное получение информации о вакцинах и медикаментах питомца
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  medicines:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Medicines'
+                  vaccine:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Medicines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/adverts:
+    get:
+      tags:
+        - user
+      summary: Найти объявления
+      description: Метод возвращает список объявлений
+      operationId: getAdverts
+      parameters:
+        - name: pageNumber
+          in: query
+          description: Номер страницы для пагинации
+          required: true
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: Количество объявлений на странице
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Успешное получение списка объявлений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertPagination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/adverts/{advertId}:
+    patch:
+      tags:
+        - user
+      summary: Обновить реакцию под объявлением
+      description: Метод обновляет реакцию под объявлением
+      operationId: updateAdvertReaction
+      parameters:
+        - name: advertId
+          in: path
+          description: Идентификатор объявления
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Обновить статус активности пользователя
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReaction'
+        required: true
+      responses:
+        '204':
+          description: Успешное обновление статуса активности
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /business/adverts:
+    get:
+      tags:
+        - business
+      summary: Найти объявления бизнес-аккаунта
+      description: >-
+        Метод возвращает список объявлений, принадлежащих текущему
+        бизнес-аккаунту
+      operationId: getMyAdverts
+      parameters:
+        - name: pageNumber
+          in: query
+          description: Номер страницы для пагинации
+          required: true
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: Количество объявлений на странице
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Успешное получение списка объявлений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertBusinessPagination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - business
+      summary: Создать новое объявление
+      description: Метод создает новое объявление
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdvertCreation'
+      responses:
+        '201':
+          description: Событие успешно создано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: Идентификатор созданного события
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /moderator/adverts:
+    get:
+      tags:
+        - moderator
+      summary: Получить список объявлений для ЛК модератора
+      parameters:
+        - name: pageNumber
+          in: query
+          description: Номер страницы для пагинации
+          required: true
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: Количество объявлений на странице
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Список объявлений с тегом moderator
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdvertModeratorPagination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /moderator/adverts/{advertId}:
+    get:
+      tags:
+        - moderator
+      summary: Получить объявление по идентификатору объявления
+      parameters:
+        - name: advertId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            description: Идентификатор объявления
+      responses:
+        '200':
+          description: Объект AdvertModeratorCheck
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertModeratorCheck'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /moderator/{advertId}/approve:
+    post:
+      tags:
+        - moderator
+      summary: Подтвердить корректность объявления
+      parameters:
+        - name: advertId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            description: Идентификатор объявления
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approved:
+                  type: boolean
+                  description: Флаг подтверждения
+                comment:
+                  type: string
+                  description: Комментарий модератора
+      responses:
+        '204':
+          description: Успешная отправка запроса
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Activity:
+      description: Статус активности пользователя
+      type: string
+      enum:
+        - IN_HOUSE
+        - WALK
+    Gender:
+      description: Пол питомца
+      type: string
+      enum:
+        - FEMALE
+        - MALE
+    Tags:
+      type: string
+      enum:
+        - '#вебинар'
+        - '#дрессировка'
+        - '#курс по коррекции'
+        - '#курс для щенков'
+        - '#ноузворк'
+        - '#ЗКС'
+        - '#зоопсихология'
+        - '#догфитнес'
+      description: Категория объявления
+    Reaction:
+      type: object
+      description: Объект реакции
+      properties:
+        id:
+          type: number
+          description: Идентификатор реакции
+        description:
+          type: string
+          description: Краткое описание реакции
+        name:
+          type: string
+          description: Понятное название для фронта, в случае отсутствия iconUrl
+        iconUrl:
+          type: string
+          description: URL изображения реакции
+    User:
+      description: Объект пользователя
+      type: object
+      properties:
+        id:
+          description: Идентификатор
+          type: string
+          format: uuid
+        username:
+          description: Имя
+          type: string
+        rating:
+          description: рейтинг
+          type: string
+        subscriptionIsActive:
+          description: признак наличия подписки
+          type: boolean
+        activity:
+          $ref: '#/components/schemas/Activity'
+        description:
+          description: О себе
+          type: string
+        myDogHandlers:
+          description: Список предпочтительных кинологов
+          type: array
+          items:
+            type: string
+        pets:
+          description: Список питомцев
+          type: array
+          items:
+            $ref: '#/components/schemas/PetUser'
+    PetUser:
+      description: Объект питомца для отображения в профиле пользователя
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Идентификатор питомца
+        imageUrl:
+          type: string
+          description: URL на аватарку
+        name:
+          type: string
+          description: Кличка питомца
+    Pet:
+      description: Объект питомца
+      type: object
+      properties:
+        id:
+          description: Идентификатор
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Кличка
+        imageUrl:
+          type: string
+          description: URL на аватарку
+        images:
+          description: Другие изображения
+          type: array
+          items:
+            type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        weight:
+          description: Вес
+          type: number
+        birthday:
+          description: Дата рождения
+          type: string
+        breed:
+          description: Порода
+          type: string
+        description:
+          description: О питомце
+          type: string
+    Medicines:
+      type: object
+      required:
+        - id
+        - name
+        - startDate
+      properties:
+        id:
+          type: string
+          description: Идентификатор
+        name:
+          description: Наименование
+          type: string
+        comment:
+          description: Комментарий
+          type: string
+        startDate:
+          description: Дата применения
+          type: string
+        endDate:
+          description: Дата окончания действия
+          type: string
+    Feedback:
+      type: object
+      description: Объект комментария
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Идентификатор комментария
+        author:
+          $ref: '#/components/schemas/Author'
+        content:
+          type: string
+          description: Текст комментария
+        publicationDate:
+          type: string
+          description: Дата публикации комментария
+        rating:
+          description: Рейтинг
+          type: string
+    Advert:
+      type: object
+      description: Объект объявления
+      properties:
+        id:
+          description: Идентификатор
+          type: string
+          format: uuid
+        author:
+          $ref: '#/components/schemas/Author'
+        isOnline:
+          description: Признак события online
+          type: boolean
+        address:
+          description: Адрес проведения события, если isOnline=false
+          type: string
+        images:
+          description: Изображения
+          type: array
+          items:
+            type: string
+        startDateEvent:
+          description: Дата начало события
+          type: string
+        endDateEvent:
+          description: Дата конца события
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tags'
+        registrationUrl:
+          description: Ссылка на регистрацию
+          type: string
+        reactionsBlock:
+          $ref: '#/components/schemas/ReactionsBlock'
+    AdvertPagination:
+      type: object
+      description: Ответ в ленту объявлений
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Advert'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    ReactionsBlock:
+      type: object
+      description: Блок с реакциями
+      properties:
+        count:
+          type: number
+          description: Количество реакций
+        setLike:
+          type: boolean
+          description: Признак активности лайка от пользователя
+        reactions:
+          type: array
+          description: Список популярных реакций
+          items:
+            $ref: '#/components/schemas/Reaction'
+          maxItems: 3
+    AdvertShortBusiness:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        image:
+          type: string
+        advertStartDate:
+          type: string
+          format: date
+          description: Дата начала активности объявления
+        advertEndDate:
+          type: string
+          format: date
+          description: Дата окончания активности объявления
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tags'
+    AdvertBusinessPagination:
+      type: object
+      description: Объявления бизнес-аккаунта
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdvertShortBusiness'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    AdvertCreation:
+      type: object
+      required:
+        - images
+        - advertStartDate
+        - advertEndDate
+        - registrationLink
+        - description
+        - category
+        - format
+        - tags
+      properties:
+        images:
+          type: array
+          items:
+            type: string
+            format: binary
+            maxItems: 10
+            description: Изображение для объявления
+        startDate:
+          type: string
+          format: date
+          description: Дата начала события
+        endDate:
+          type: string
+          format: date
+          description: Дата окончания события
+        advertStartDate:
+          type: string
+          format: date
+          description: Дата начала активности объявления
+        advertEndDate:
+          type: string
+          format: date
+          description: Дата окончания активности объявления
+        registrationLink:
+          type: string
+          format: url
+          description: Ссылка для регистрации на событие
+        description:
+          type: string
+          description: Текстовое описание события
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tags'
+        format:
+          $ref: '#/components/schemas/Format'
+    AdvertShortModerator:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Идентификатор объявления
+        createDate:
+          type: string
+          format: date-time
+          description: Дата создания объявления
+        author:
+          $ref: '#/components/schemas/Author'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tags'
+    AdvertModeratorPagination:
+      type: object
+      description: Объявления бизнес-аккаунта
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdvertShortModerator'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    AdvertModeratorCheck:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            author:
+              $ref: '#/components/schemas/Author'
+        - $ref: '#/components/schemas/AdvertCreation'
+    Format:
+      type: object
+      required:
+        - format
+      properties:
+        format:
+          type: string
+          enum:
+            - online
+            - offline
+          description: Формат проведения события
+        address:
+          type: string
+          description: Адрес проведения события (необязательно, только для online формата)
+    Author:
+      type: object
+      description: Автор
+      properties:
+        id:
+          type: string
+          description: Идентификатор автора
+        name:
+          type: string
+          description: UserName автора
+        imageURL:
+          type: string
+          description: URL аватара автора
+    Pagination:
+      type: object
+      description: Пагинация
+      properties:
+        pageNumber:
+          type: number
+          description: Активная страница
+        size:
+          type: number
+          description: Количество отображаемых записей
+        existsNextPage:
+          type: boolean
+          description: Наличие следующей страницы
+    UpdateReaction:
+      type: object
+      description: Объект для обновления реакции для объявления
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Идентификатор объявления
+        value:
+          $ref: '#/components/schemas/Reaction'
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: >-
+            URI, которая идентифицирует тип проблемы, например, ссылка на
+            документацию
+        title:
+          type: string
+          description: Краткое описание ошибки
+        status:
+          type: number
+          description: Код статуса HTTP
+        detail:
+          type: string
+          description: Полное описание ошибки
+        instance:
+          type: string
+          description: URI, которая идентифицирует конкретное место возникновение проблемы
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Аутентификация с помощью bearer токена.
