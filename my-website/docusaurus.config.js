@@ -74,6 +74,20 @@ const config = {
         },
       }),
     ],
+    [
+      'redocusaurus',
+      {
+        specs: [
+          {
+            id: 'petstore',
+            spec: 'api_specs/openapi.yaml',
+          },
+        ],
+        theme: {
+          primaryColor: '#1890ff',
+        },
+      }
+    ],
   ],
 
   themeConfig:

@@ -4,4 +4,6 @@ sidebar_position: 1
 
 # OpenAPI
 
-Превью OpenAPI
+import ApiDocMdx from '@theme/ApiDocMdx';
+
+<ApiDocMdx id="petstore" />
